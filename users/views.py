@@ -3,9 +3,15 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages 
 from django.contrib.auth import authenticate, login, logout
+from .models import Stocks
+
 
 def home(request):
-    return render(request, "users/index.html")
+    stocks = Stocks.objects.all()
+    context = {
+        'stocks' : stocks
+    }
+    return render(request, "index.html", context)
 
 def signup(request):
     if request.method == "POST":
@@ -28,7 +34,7 @@ def signup(request):
         return redirect('/signin')
 
 
-    return render(request, 'users/signup.html')
+    return render(request, 'signup.html')
 
 def signin(request):
     if request.method == "POST":
@@ -41,18 +47,20 @@ def signin(request):
         if user is not None:
             login(request, user)
             fname = user.first_name
-            return render(request, "users/index.html", {'fname': fname})
+            return render(request, "index.html", {'fname': fname})
 
         else: 
             messages.error(request, "Bad Credentials!")
             return redirect('home')
 
-    return render(request, 'users/signin.html')
+    return render(request, 'signin.html')
     
   
 def signout(request):
     logout(request)
     messages.success(request, 'logged out successfully!')
     return redirect('home')
+
+
 
 
