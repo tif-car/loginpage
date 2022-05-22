@@ -1,9 +1,10 @@
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
+from django.http import HttpResponse 
 from django.contrib.auth.models import User
-from django.contrib import messages 
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import Stocks
+import random
 
 
 def home(request):
@@ -60,7 +61,6 @@ def signout(request):
     logout(request)
     messages.success(request, 'logged out successfully!')
     return redirect('home')
-
 
 
 
